@@ -161,7 +161,7 @@ const HeroSlide = ({ direction, onNext }) => (
       </motion.div>
 
       <h1 className="text-4xl md:text-8xl font-black text-hot-pink font-poppins mb-4 tracking-tighter drop-shadow-md glitter-text">
-        Happy 22nd, Hera!
+        Happy 21st, Hera!
       </h1>
       <p className="text-xl md:text-4xl font-dancing text-princess-pink mb-12 font-bold">
         Halaman Rahasia Paling Spesial... 💖
@@ -186,7 +186,7 @@ const TimelineSlide = ({ direction }) => {
     { title: "Roblox Story 🎮", text: "Dimulai dari dunia blok, siapa sangka cinta kita nggak cuma bohongan. Dari Roblox jadi Rumah paling nyaman.", icon: <Gamepad2 /> },
     { title: "Suara Manismu 📞", text: "Malam-malam lewati layar kecil, tapi hangatnya suara kamu sampai ke ulu hati. Sleepcall yang paling berharga.", icon: <MessageCircle /> },
     { title: "Rindu LDR 🌍", text: "LDR menyiksa, tapi VC jadi nyawa. Walau jarak memisahkan tangan, hatiku tetap di genggamanmu.", icon: <MapPin /> },
-    { title: "Our 22nd Lily 🌸", text: "Hari ini, 22 lilin menyala. Doaku sampai ke sana, menjagamu walau dari jauh saja.", icon: <Calendar /> }
+    { title: "Our 21st Lily 🌸", text: "Hari ini, 21 lilin menyala. Doaku sampai ke sana, menjagamu walau dari jauh saja.", icon: <Calendar /> }
   ];
 
   return (
@@ -290,7 +290,7 @@ const CakeSlide = ({ direction }) => {
         <div className="relative w-64 h-64 md:w-80 md:h-80 flex flex-col items-center justify-end">
           {/* Candles */}
           <div className="flex gap-4 mb-[-10px] z-20">
-            {['2', '2'].map((n, i) => (
+            {['2', '1'].map((n, i) => (
               <div key={i} className="relative flex flex-col items-center">
                 {!blown && (
                   <motion.div
@@ -457,7 +457,7 @@ const LetterSlide = ({ direction }) => (
       <h3 className="text-3xl md:text-5xl text-hot-pink font-black font-dancing mb-10 md:mb-12 glitter-text">Selamat Ulang Tahun, Heraa Sayang... 🎈</h3>
       <div className="font-dancing text-xl md:text-4xl text-gray-800 leading-normal md:leading-loose space-y-6 md:space-y-10 text-center font-bold">
         <p>
-          22 tahun lilin menyala, walau jarak pisahkan kita, doaku selalu sampai ke sana. Kamu adalah hadiah dari dunia maya yang jadi kenyataan terindahku.
+          21 tahun lilin menyala, walau jarak pisahkan kita, doaku selalu sampai ke sana. Kamu adalah hadiah dari dunia maya yang jadi kenyataan terindahku.
         </p>
         <p className="text-princess-pink scale-105 md:scale-110 transform">
           "Maaf ya kalau aku sering egois, sering salah paham, bikin kamu nangis. Makasih udah bertahan saat aku sulit dimengerti."
