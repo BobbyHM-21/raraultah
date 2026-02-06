@@ -27,7 +27,11 @@ import {
   Camera,
   Coffee,
   UtensilsCrossed,
-  HandMetal
+  HandMetal,
+  Trophy,
+  HeartHandshake,
+  Milestone,
+  CheckCircle2
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 
@@ -254,6 +258,173 @@ const OpenWhenLetter = ({ direction, onOpen }) => {
           </motion.div>
         )}
       </AnimatePresence>
+    </Slide>
+  );
+};
+
+// --- Ultra-Melting New Slides ---
+
+const AwardSlide = ({ direction }) => {
+  const awards = [
+    { title: "Best LDR Partner", desc: "Sabar banget nunggu aku & selalu ada.", icon: <Heart className="text-hot-pink" /> },
+    { title: "Prettiest Voice", desc: "Suara paling nenangin pas kita VC.", icon: <Volume2 className="text-gold" /> },
+    { title: "Strongest Girl", desc: "Hebat banget ngadepin rindu sendirian.", icon: <Trophy className="text-princess-pink" /> },
+    { title: "My Favorite Person", desc: "Satu-satunya orang yang bikin aku nyaman.", icon: <Star className="text-yellow-400" /> }
+  ];
+
+  return (
+    <Slide direction={direction}>
+      <motion.div animate={{ rotate: [0, 2, -2, 0] }} transition={{ repeat: Infinity, duration: 4 }}>
+        <Trophy size={64} className="text-gold mx-auto mb-6 drop-shadow-lg" />
+      </motion.div>
+      <h2 className="text-3xl md:text-5xl font-black text-hot-pink mb-8 font-dancing">Awards for My Princess 👑</h2>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full max-w-2xl px-4">
+        {awards.map((award, i) => (
+          <motion.div
+            key={i}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ delay: i * 0.2 }}
+            className="bg-white/90 backdrop-blur-sm p-4 rounded-2xl border-2 border-sakura shadow-sm hover:scale-[1.02] transition-transform"
+          >
+            <div className="flex items-center gap-4">
+              <div className="p-3 bg-sakura/20 rounded-xl">{award.icon}</div>
+              <div className="text-left">
+                <p className="font-black text-hot-pink text-sm md:text-lg">{award.title}</p>
+                <p className="font-dancing text-gray-600 text-sm md:text-base italic">{award.desc}</p>
+              </div>
+            </div>
+          </motion.div>
+        ))}
+      </div>
+    </Slide>
+  );
+};
+
+const ReasonsSlide = ({ direction }) => {
+  const reasons = [
+    "Suka banget sama cara kamu manggil namaku... 💓",
+    "Suka ketawa kamu yang bikin duniaku cerah 🌟",
+    "Suka betapa sabarnya kamu dengerin ceritaku ✨",
+    "Suka cara kamu perhatian walau kita jauh 📞",
+    "Suka betapa cantiknya kamu apa adanya 👑",
+    " because you are simply YOU. My Raraa. 🤍"
+  ];
+  const [index, setIndex] = useState(0);
+
+  return (
+    <Slide direction={direction}>
+      <h2 className="text-3xl md:text-5xl font-black text-hot-pink mb-12 font-dancing">Kenapa Aku Sayang Kamu? 🃏</h2>
+      <div className="relative w-full max-w-sm aspect-[3/4] flex items-center justify-center px-6">
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={index}
+            initial={{ rotateY: 90, opacity: 0 }}
+            animate={{ rotateY: 0, opacity: 1 }}
+            exit={{ rotateY: -90, opacity: 0 }}
+            transition={{ duration: 0.5 }}
+            className="w-full h-full bg-white rounded-[2rem] border-4 border-hot-pink shadow-2xl flex flex-col items-center justify-center p-8 text-center cursor-pointer"
+            onClick={() => setIndex((index + 1) % reasons.length)}
+          >
+            <Quote className="text-sakura mb-8 size-12" />
+            <p className="font-dancing text-2xl md:text-4xl text-gray-800 font-black leading-relaxed italic">
+              "{reasons[index]}"
+            </p>
+            <p className="mt-12 text-xs text-princess-pink font-bold animate-pulse">TAP UNTUK LIHAT ALASAN LAIN ✨</p>
+          </motion.div>
+        </AnimatePresence>
+      </div>
+    </Slide>
+  );
+};
+
+const StarSlide = ({ direction }) => {
+  return (
+    <Slide direction={direction}>
+      <div className="absolute inset-0 bg-[#0a0a1a] z-[-1] overflow-hidden">
+        {[...Array(50)].map((_, i) => (
+          <motion.div
+            key={i}
+            className="absolute bg-white rounded-full"
+            style={{
+              width: Math.random() * 3,
+              height: Math.random() * 3,
+              left: `${Math.random() * 100}%`,
+              top: `${Math.random() * 100}%`,
+            }}
+            animate={{ opacity: [0.2, 1, 0.2] }}
+            transition={{ duration: Math.random() * 2 + 1, repeat: Infinity }}
+          />
+        ))}
+      </div>
+      <motion.div
+        animate={{ scale: [1, 1.2, 1], rotate: [0, 5, -5, 0] }}
+        transition={{ duration: 5, repeat: Infinity }}
+        className="relative mb-12"
+      >
+        <Star size={120} className="text-gold fill-current drop-shadow-[0_0_50px_rgba(255,215,0,0.8)]" />
+        <Sparkles className="absolute -top-4 -right-4 text-white animate-pulse" />
+      </motion.div>
+      <div className="max-w-2xl px-6">
+        <h2 className="text-3xl md:text-6xl font-black text-white mb-8 font-dancing">A Star Named After You ✨</h2>
+        <p className="text-xl md:text-3xl text-sakura font-dancing leading-relaxed italic font-bold">
+          "Di duniaku yang kadang gelap dan sepi, kamulah satu-satunya bintang yang nggak pernah redup menyinari hariku."
+        </p>
+        <p className="mt-8 text-white/40 font-poppins text-xs tracking-[0.5em] uppercase">You are my universe 🌌</p>
+      </div>
+    </Slide>
+  );
+};
+
+const PinkyPromiseSlide = ({ direction }) => {
+  const [promised, setPromised] = useState(false);
+  const handlePromise = () => {
+    if (promised) return;
+    setPromised(true);
+    confetti({
+      particleCount: 150,
+      spread: 70,
+      origin: { y: 0.6 },
+      colors: ['#FF1493', '#FFFFFF', '#FFB7C5']
+    });
+  };
+
+  return (
+    <Slide direction={direction}>
+      <h2 className="text-3xl md:text-5xl font-black text-hot-pink mb-12 font-dancing">Our Pinky Promise 🤙</h2>
+      <div className="relative flex flex-col items-center">
+        <motion.div
+          onClick={handlePromise}
+          className="cursor-pointer relative p-12 bg-white rounded-full border-4 border-sakura shadow-xl group mb-8"
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.9 }}
+        >
+          <AnimatePresence mode="wait">
+            {!promised ? (
+              <motion.div key="unpromised" className="flex items-center justify-center gap-4 text-sakura">
+                <HandMetal size={80} className="rotate-90 group-hover:scale-110 transition-transform" />
+                <HandMetal size={80} className="-rotate-90 group-hover:scale-110 transition-transform -scale-x-100" />
+              </motion.div>
+            ) : (
+              <motion.div key="promised" initial={{ scale: 0 }} animate={{ scale: 1 }} className="text-hot-pink">
+                <HeartHandshake size={100} className="animate-bounce" />
+              </motion.div>
+            )}
+          </AnimatePresence>
+          {!promised && (
+            <div className="absolute inset-0 border-4 border-hot-pink rounded-full border-dashed animate-[spin_10s_linear_infinite]" />
+          )}
+        </motion.div>
+
+        <p className="text-xl md:text-3xl font-dancing font-black text-gray-800 italic max-w-sm mb-4">
+          {promised ? "Janji Terkunci Selamanya... 💖" : "Tap untuk janji selalu bareng-bareng? ✨"}
+        </p>
+        {promised && (
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex items-center gap-2 text-hot-pink font-black uppercase text-xs tracking-widest">
+            <CheckCircle2 size={16} /> Locked in our hearts
+          </motion.div>
+        )}
+      </div>
     </Slide>
   );
 };
@@ -556,6 +727,10 @@ function App() {
     { key: "bucket", comp: BucketListSlide },
     { key: "cake", comp: CakeSlide },
     { key: "hug", comp: (props) => <Slide {...props}><h2 className="text-3xl md:text-5xl font-black text-hot-pink mb-12 font-dancing">Send Me A Hug! 🫂</h2><HoldToHug /></Slide> },
+    { key: "reasons", comp: ReasonsSlide },
+    { key: "awards", comp: AwardSlide },
+    { key: "star", comp: StarSlide },
+    { key: "promise", comp: PinkyPromiseSlide },
     { key: "open-when", comp: OpenWhenLetter },
     { key: "gift", comp: GiftSlide },
     { key: "final", comp: FinalSlide }
@@ -606,14 +781,14 @@ function App() {
       <Glitter />
       <audio ref={audioRef} loop src="/lagu-raraa.mp3" preload="auto" />
 
-      <div className="fixed top-6 left-6 md:top-10 md:left-10 flex gap-1 md:gap-2 z-[60] bg-white/60 backdrop-blur-md p-2 md:p-3 rounded-full border-2 border-sakura shadow-md max-w-[85vw] overflow-x-auto hide-scrollbar">
+      <div className="fixed top-6 left-1/2 -translate-x-1/2 md:translate-x-0 md:left-10 flex gap-1 md:gap-2 z-[60] bg-white/60 backdrop-blur-md p-2 md:p-3 rounded-full border-2 border-sakura shadow-md max-w-[90vw] overflow-x-auto hide-scrollbar scroll-smooth">
         {SLIDES.map((_, i) => (
           <motion.div key={i} className="cursor-pointer shrink-0" onClick={() => {
             if (slide === 0) startMusic();
             setDirection(i > slide ? 1 : -1);
             setSlide(i);
           }} whileHover={{ scale: 1.3 }}>
-            <Heart fill={i <= slide ? "#FF1493" : "none"} stroke={i <= slide ? "#FF1493" : "#FFB7C5"} size={i === slide ? 20 : 10} className="transition-all duration-300" strokeWidth={3} />
+            <Heart fill={i <= slide ? "#FF1493" : "none"} stroke={i <= slide ? "#FF1493" : "#FFB7C5"} size={i === slide ? 18 : 10} className="transition-all duration-300" strokeWidth={3} />
           </motion.div>
         ))}
       </div>
