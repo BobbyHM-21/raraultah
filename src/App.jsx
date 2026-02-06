@@ -18,7 +18,8 @@ import {
   Quote,
   Music,
   PartyPopper,
-  Crown
+  Crown,
+  Wind
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 
@@ -125,7 +126,6 @@ const HeartParticles = () => {
 };
 
 // --- Slide Wrapper ---
-// REFACTORED: Added overflow-y-auto and padding to avoid overlap with fixed UI
 const Slide = ({ children, direction }) => (
   <motion.div
     initial={{ opacity: 0, scale: 0.8 }}
@@ -260,10 +260,98 @@ const LyricsSlide = ({ direction }) => {
           transition={{ delay: 2.5 }}
         >
           <div className="h-[2px] w-8 md:w-12 bg-sakura" />
-          {/* UPDATED: Change Blue heart to White heart */}
           <p className="text-hot-pink font-black tracking-[0.2em] md:tracking-[0.3em] uppercase text-xs md:text-sm">Honest Heart 🤍</p>
           <div className="h-[2px] w-8 md:w-12 bg-sakura" />
         </motion.div>
+      </div>
+    </Slide>
+  );
+};
+
+const CakeSlide = ({ direction }) => {
+  const [blown, setBlown] = useState(false);
+
+  const handleBlow = () => {
+    if (blown) return;
+    setBlown(true);
+    confetti({
+      particleCount: 100,
+      spread: 70,
+      origin: { y: 0.6 },
+      colors: ['#FFB7C5', '#FF69B4', '#FFFFFF']
+    });
+  };
+
+  return (
+    <Slide direction={direction}>
+      <h2 className="text-4xl md:text-6xl font-black text-hot-pink mb-12 font-dancing">Waktunya Tiup Lilin! 🎂</h2>
+      <div className="relative flex flex-col items-center">
+        {/* Cake Structure */}
+        <div className="relative w-64 h-64 md:w-80 md:h-80 flex flex-col items-center justify-end">
+          {/* Candles */}
+          <div className="flex gap-4 mb-[-10px] z-20">
+            {['2', '2'].map((n, i) => (
+              <div key={i} className="relative flex flex-col items-center">
+                {!blown && (
+                  <motion.div
+                    animate={{
+                      scale: [1, 1.2, 1],
+                      opacity: [0.7, 1, 0.7],
+                      y: [0, -2, 0]
+                    }}
+                    transition={{ repeat: Infinity, duration: 0.5, delay: i * 0.2 }}
+                    className="w-4 h-6 bg-gold rounded-full blur-[2px] shadow-[0_0_10px_#FFD700]"
+                  />
+                )}
+                {blown && (
+                  <motion.div
+                    initial={{ opacity: 1, y: 0 }}
+                    animate={{ opacity: 0, y: -20 }}
+                    className="text-gray-400 font-bold text-xs"
+                  >
+                    *psssh*
+                  </motion.div>
+                )}
+                <div className="w-8 h-12 bg-princess-pink rounded-t-lg flex items-center justify-center text-white font-black text-xl border-2 border-white shadow-md">
+                  {n}
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Top Tier */}
+          <motion.div
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+            className="w-40 h-16 bg-sakura rounded-t-3xl border-x-4 border-t-4 border-white shadow-inner z-10"
+          />
+          {/* Middle Tier */}
+          <motion.div
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+            transition={{ delay: 0.2 }}
+            className="w-56 h-20 bg-princess-pink border-x-4 border-t-4 border-white shadow-md z-[5]"
+          />
+          {/* Bottom Tier */}
+          <motion.div
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+            transition={{ delay: 0.4 }}
+            className="w-72 h-24 bg-hot-pink rounded-b-lg border-4 border-white shadow-xl"
+          />
+
+          {/* Plate */}
+          <div className="w-80 h-4 bg-gray-100 rounded-full shadow-md mt-[-4px]" />
+        </div>
+
+        <motion.button
+          onClick={handleBlow}
+          disabled={blown}
+          className={`mt-16 px-8 py-4 rounded-full font-black text-2xl flex items-center gap-3 transition-all ${blown ? 'bg-gray-200 text-gray-400' : 'bg-hot-pink text-white shadow-xl hover:scale-105 active:scale-95'}`}
+        >
+          {blown ? "Sudah Ditiup! ✨" : "Tiup Lilinnya! 🌬️"}
+          {!blown && <Wind className="animate-pulse" />}
+        </motion.button>
       </div>
     </Slide>
   );
@@ -344,7 +432,6 @@ const HeartDrawingSlide = ({ direction }) => {
             />
           </svg>
         </div>
-        {/* UPDATED: Change Blue heart to White heart */}
         <motion.p
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -378,7 +465,6 @@ const LetterSlide = ({ direction }) => (
         <p className="glitter-text">
           Suatu hari kita tak lagi menghitung jarak. Tak lewat layar, tak lewat suara, tapi benar-benar bersatu selamanya.
         </p>
-        {/* UPDATED: Change Blue heart to White heart */}
         <p className="text-hot-pink text-3xl md:text-6xl mt-8 md:mt-12 transition-all">
           Aku sayang kamu, sungguh 🤍 🎀
         </p>
@@ -459,7 +545,6 @@ const FinalSlide = ({ direction }) => (
       </div>
     </motion.div>
     <div className="mt-12 md:mt-16 text-center">
-      {/* UPDATED: Change Blue heart to White heart */}
       <p className="text-hot-pink font-black tracking-[0.3em] uppercase text-sm md:text-lg mb-4">Bobby 🤍 Hera</p>
       <p className="text-princess-pink font-dancing text-3xl md:text-4xl font-bold animate-bounce italic">Cant't wait to see you soon!</p>
     </div>
@@ -473,7 +558,7 @@ function App() {
   const [direction, setDirection] = useState(1);
   const [isPlaying, setIsPlaying] = useState(false);
   const audioRef = useRef(null);
-  const totalSlides = 8;
+  const totalSlides = 9; // Added CakeSlide
 
   const toggleMusic = () => {
     if (isPlaying) {
@@ -530,8 +615,7 @@ function App() {
               fill={i <= slide ? "#FF1493" : "none"}
               stroke={i <= slide ? "#FF1493" : "#FFB7C5"}
               size={i === slide ? 22 : 12}
-              className={`transition-all duration-300 ${i === slide ? 'drop-shadow-[0_0_8px_#FF1493]' : ''} sm:size-24`}
-              md:size={i === slide ? 28 : 16}
+              className={`transition-all duration-300 ${i === slide ? 'drop-shadow-[0_0_8px_#FF1493]' : ''}`}
               strokeWidth={3}
             />
           </motion.div>
@@ -543,16 +627,16 @@ function App() {
           {slide === 0 && <HeroSlide key={0} direction={direction} onNext={nextSlide} />}
           {slide === 1 && <TimelineSlide key={1} direction={direction} />}
           {slide === 2 && <LyricsSlide key={2} direction={direction} />}
-          {slide === 3 && <ReasonsSlide key={3} direction={direction} />}
-          {slide === 4 && <HeartDrawingSlide key={4} direction={direction} />}
-          {slide === 5 && <LetterSlide key={5} direction={direction} />}
-          {slide === 6 && <GiftSlide key={6} direction={direction} />}
-          {slide === 7 && <FinalSlide key={7} direction={direction} />}
+          {slide === 3 && <CakeSlide key={3} direction={direction} />}
+          {slide === 4 && <ReasonsSlide key={4} direction={direction} />}
+          {slide === 5 && <HeartDrawingSlide key={5} direction={direction} />}
+          {slide === 6 && <LetterSlide key={6} direction={direction} />}
+          {slide === 7 && <GiftSlide key={7} direction={direction} />}
+          {slide === 8 && <FinalSlide key={8} direction={direction} />}
         </AnimatePresence>
       </div>
 
       {/* Navigation Buttons - PINKY BOUNCE */}
-      {/* REFACTORED: Better positioning and sizing for mobile */}
       <div className="fixed bottom-6 left-0 right-0 md:bottom-10 flex justify-center items-center gap-6 md:gap-12 z-[60] px-4">
         <AnimatePresence>
           {slide > 0 && (
