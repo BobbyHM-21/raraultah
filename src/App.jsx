@@ -303,9 +303,9 @@ const AwardSlide = ({ direction }) => {
 
 const ReasonsSlide = ({ direction }) => {
   const reasons = [
-    "Suka banget sama cara kamu manggil namaku... 💓",
-    "Suka ketawa kamu yang bikin duniaku cerah 🌟",
-    "Suka betapa sabarnya kamu dengerin ceritaku ✨",
+    "Suka banget sama cara kamu manggil sayang... 💓",
+    "Suka senyum kamu yang bikin duniaku cerah 🌟",
+    "Suka betapa sabarnya kamu hadepin aku ✨",
     "Suka cara kamu perhatian walau kita jauh 📞",
     "Suka betapa cantiknya kamu apa adanya 👑",
     " because you are simply YOU. My Raraa. 🤍"
