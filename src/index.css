@@ -1,0 +1,59 @@
+@import "tailwindcss";
+
+@theme {
+  --color-hot-pink: #FF1493;
+  --color-princess-pink: #FF69B4;
+  --color-sakura: #FFB7C5;
+  --color-pearl-white: #F8F8FF;
+  --color-gold: #FFD700;
+
+  --color-soft-pink: #FFC0CB;
+  --color-lavender: #E6E6FA;
+  --color-cream: #FFFDD0;
+  --color-rose-gold: #B76E79;
+
+  --font-poppins: "Poppins", sans-serif;
+  --font-dancing: "Dancing Script", cursive;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+body {
+  @apply bg-pearl-white text-gray-800 font-poppins overflow-x-hidden;
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Custom Animation Classes */
+.bubble-bounce {
+  transition: transform 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.bubble-bounce:hover {
+  transform: scale(1.1);
+}
+
+.glitter-text {
+  background: linear-gradient(90deg, #FF1493, #FFD700, #FF69B4);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shine 4s linear infinite;
+}
+
+@keyframes shine {
+  to {
+    background-position: 200% center;
+  }
+}
