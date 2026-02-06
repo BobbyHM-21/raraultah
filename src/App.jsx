@@ -161,7 +161,7 @@ const HeroSlide = ({ direction, onNext }) => (
       </motion.div>
 
       <h1 className="text-4xl md:text-8xl font-black text-hot-pink font-poppins mb-4 tracking-tighter drop-shadow-md glitter-text">
-        Happy 21st, Hera!
+        Happy 21st, Raraa!
       </h1>
       <p className="text-xl md:text-4xl font-dancing text-princess-pink mb-12 font-bold">
         Halaman Rahasia Paling Spesial... 💖
@@ -173,7 +173,7 @@ const HeroSlide = ({ direction, onNext }) => (
         whileTap={{ scale: 0.9 }}
       >
         <Sparkles className="absolute -top-4 -left-4 text-gold group-hover:animate-spin size-5 md:size-6" />
-        Buka Hati Hera ✨
+        Buka Hati Raraa ✨
         <Sparkles className="absolute -bottom-4 -right-4 text-gold group-hover:animate-spin size-5 md:size-6" />
       </motion.button>
     </motion.div>
@@ -369,7 +369,7 @@ const ReasonsSlide = ({ direction }) => {
 
   return (
     <Slide direction={direction}>
-      <h2 className="text-3xl md:text-5xl font-black text-hot-pink mb-12 md:mb-16 font-dancing">Kenapa Hera Paling Spesial? 🍓</h2>
+      <h2 className="text-3xl md:text-5xl font-black text-hot-pink mb-12 md:mb-16 font-dancing">Kenapa Raraa Paling Spesial? 🍓</h2>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 max-w-5xl w-full">
         {reasons.map((r, i) => (
           <motion.div
@@ -454,7 +454,7 @@ const LetterSlide = ({ direction }) => (
         <Ribbon className="w-full h-full text-hot-pink" />
       </div>
 
-      <h3 className="text-3xl md:text-5xl text-hot-pink font-black font-dancing mb-10 md:mb-12 glitter-text">Selamat Ulang Tahun, Heraa Sayang... 🎈</h3>
+      <h3 className="text-3xl md:text-5xl text-hot-pink font-black font-dancing mb-10 md:mb-12 glitter-text">Selamat Ulang Tahun, Raraa Sayang... 🎈</h3>
       <div className="font-dancing text-xl md:text-4xl text-gray-800 leading-normal md:leading-loose space-y-6 md:space-y-10 text-center font-bold">
         <p>
           21 tahun lilin menyala, walau jarak pisahkan kita, doaku selalu sampai ke sana. Kamu adalah hadiah dari dunia maya yang jadi kenyataan terindahku.
@@ -507,7 +507,7 @@ const GiftSlide = ({ direction }) => {
               <Gift className="w-40 h-40 md:w-56 md:h-56 text-hot-pink relative z-10 drop-shadow-2xl" strokeWidth={1.5} />
               <Ribbon className="absolute top-2 left-1/2 -translate-x-1/2 w-14 h-14 md:w-20 md:h-20 text-white z-20" />
             </motion.div>
-            <p className="mt-12 md:mt-16 text-hot-pink font-black text-2xl md:text-3xl animate-bounce tracking-widest glitter-text">TEKAN KADO HERA! 🍰</p>
+            <p className="mt-12 md:mt-16 text-hot-pink font-black text-2xl md:text-3xl animate-bounce tracking-widest glitter-text">TEKAN KADO RARAA! 🍰</p>
           </motion.div>
         ) : (
           <motion.div
@@ -545,7 +545,7 @@ const FinalSlide = ({ direction }) => (
       </div>
     </motion.div>
     <div className="mt-12 md:mt-16 text-center">
-      <p className="text-hot-pink font-black tracking-[0.3em] uppercase text-sm md:text-lg mb-4">Bobby 🤍 Hera</p>
+      <p className="text-hot-pink font-black tracking-[0.3em] uppercase text-sm md:text-lg mb-4">Bobby 🤍 Raraa</p>
       <p className="text-princess-pink font-dancing text-3xl md:text-4xl font-bold animate-bounce italic">Cant't wait to see you soon!</p>
     </div>
   </Slide>
@@ -596,7 +596,7 @@ function App() {
       <audio
         ref={audioRef}
         loop
-        src="/lagu-hera.mp3"
+        src="/lagu-raraa.mp3"
       />
 
       {/* Progress Dots - HEART VERSION */}
@@ -670,7 +670,7 @@ function App() {
       </div>
 
       <footer className="fixed bottom-1 md:bottom-2 left-1/2 -translate-x-1/2 text-[8px] md:text-[10px] text-hot-pink/40 tracking-[0.3em] md:tracking-[0.5em] font-black uppercase pointer-events-none">
-        Special for Hera 🤍 2026
+        Special for Raraa 🤍 2026
       </footer>
     </main>
   );
