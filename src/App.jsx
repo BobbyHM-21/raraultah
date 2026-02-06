@@ -631,7 +631,13 @@ function App() {
     { key: "hero", comp: HeroSlide },
     { key: "timeline", comp: TimelineSlide },
     { key: "lyrics", comp: LyricsSlide },
-    { key: "balloons", comp: (props) => <Slide {...props}><h2 className="text-3xl md:text-5xl font-black text-hot-pink mb-12 font-dancing">Wishes for You 🎈</h2><BalloonPop /></Slide> },
+    {
+      key: "balloons", comp: (props) => <Slide {...props}>
+        <h2 className="text-3xl md:text-5xl font-black text-hot-pink mb-4 font-dancing">Wishes for You 🎈</h2>
+        <p className="text-princess-pink font-bold text-sm md:text-lg mb-8 animate-pulse">Tap balonnya untuk melihat kejutan! ✨</p>
+        <BalloonPop />
+      </Slide>
+    },
     { key: "cake", comp: CakeSlide },
     { key: "hug", comp: (props) => <Slide {...props}><h2 className="text-3xl md:text-5xl font-black text-hot-pink mb-12 font-dancing">Send Me A Hug! 🫂</h2><HoldToHug /></Slide> },
     { key: "letter", comp: LetterSlide },
