@@ -183,7 +183,7 @@ const HeroSlide = ({ direction, onNext }) => (
 const TimelineSlide = ({ direction }) => {
   const [step, setStep] = useState(0);
   const moments = [
-    { title: "Roblox Story 🎮", text: "Delapan Februari, di dunia blok semua bermula. Tak pernah ku sangka akhirnya hatiku jatuh sedalam ini padamu.", icon: <Gamepad2 /> },
+    { title: "Roblox Story 🎮", text: "Delapan Februari, di dunia roblox semua bermula. Tak pernah ku sangka akhirnya hatiku jatuh sedalam ini padamu.", icon: <Gamepad2 /> },
     { title: "Suara Penenang 📞", text: "Malam terasa panjang saat rindu menyerang, tapi suaramu jadi penenang meski hanya lewat layar terang.", icon: <MessageCircle /> },
     { title: "LDR & VC 🌍", text: "Meski LDR memisahkan kita, VC jadi peluk sederhana. Jangan simpan lukamu sendiri, aku di sini untukmu.", icon: <MapPin /> },
     { title: "Our 21st Lily 🌸", text: "Hari ini, 21 lilin menyala. Menyebut namamu dalam doa, semoga hatimu selalu hangat meski hidup tak selalu ramah.", icon: <Calendar /> }
@@ -457,7 +457,7 @@ const LetterSlide = ({ direction }) => (
       <h3 className="text-3xl md:text-5xl text-hot-pink font-black font-dancing mb-10 md:mb-12 glitter-text">Selamat Ulang Tahun, Raraa cintaku... 🎈</h3>
       <div className="font-dancing text-xl md:text-3xl text-gray-800 leading-relaxed space-y-8 md:space-y-10 text-center font-bold">
         <p>
-          "Maafkan aku yang sering menyakitkan. Kita sering bertengkar, sering diam... Aku salah, terlalu banyak kupendam."
+          "Maafkan aku yang sering menyakitkan. Kita sering bertengkar, sering diam... Aku salah, terlalu banyak kau pendam."
         </p>
         <p className="text-princess-pink italic">
           "Kalau dunia terasa berat dan aku jadi alasan sesak, pegang tanganku meski jauh. Aku masih ingin berjuang untukmu."
