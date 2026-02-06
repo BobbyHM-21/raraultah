@@ -19,7 +19,9 @@ import {
   Music,
   PartyPopper,
   Crown,
-  Wind
+  Wind,
+  MousePointer2,
+  CalendarHeart
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 
@@ -74,6 +76,58 @@ const Glitter = () => {
   );
 };
 
+// --- Ambient Particles (Sakura & Balloons) ---
+const AmbientBackground = () => {
+  const [sakuras, setSakuras] = useState([]);
+  const [balloons, setBalloons] = useState([]);
+
+  useEffect(() => {
+    const sInterval = setInterval(() => {
+      setSakuras(prev => [...prev.slice(-15), { id: Math.random(), x: Math.random() * 100 }]);
+    }, 3000);
+
+    const bInterval = setInterval(() => {
+      setBalloons(prev => [...prev.slice(-10), { id: Math.random(), x: Math.random() * 100, size: Math.random() * 40 + 20 }]);
+    }, 4000);
+
+    return () => { clearInterval(sInterval); clearInterval(bInterval); };
+  }, []);
+
+  return (
+    <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+      {/* Sakura Petals */}
+      <AnimatePresence>
+        {sakuras.map(s => (
+          <motion.div
+            key={s.id}
+            initial={{ y: -50, x: `${s.x}%`, opacity: 0, rotate: 0 }}
+            animate={{ y: "110vh", x: `${s.x + (Math.random() * 20 - 10)}%`, opacity: 0.6, rotate: 360 }}
+            transition={{ duration: 10, ease: "linear" }}
+            className="absolute text-sakura"
+          >
+            <Wind size={20} />
+          </motion.div>
+        ))}
+      </AnimatePresence>
+
+      {/* Floating Balloons */}
+      <AnimatePresence>
+        {balloons.map(b => (
+          <motion.div
+            key={b.id}
+            initial={{ y: "110vh", x: `${b.x}%`, opacity: 0 }}
+            animate={{ y: "-20vh", x: `${b.x + (Math.random() * 10 - 5)}%`, opacity: 0.3 }}
+            transition={{ duration: 15, ease: "easeOut" }}
+            className="absolute text-princess-pink"
+          >
+            <Cloud size={b.size} fill="currentColor" />
+          </motion.div>
+        ))}
+      </AnimatePresence>
+    </div>
+  );
+};
+
 // --- Background Music Component ---
 const MusicPlayer = ({ isPlaying, toggleMusic }) => {
   return (
@@ -85,42 +139,6 @@ const MusicPlayer = ({ isPlaying, toggleMusic }) => {
       >
         {isPlaying ? <Volume2 size={24} /> : <VolumeX size={24} />}
       </motion.button>
-    </div>
-  );
-};
-
-// --- Heart Particles Effect ---
-const HeartParticles = () => {
-  const [particles, setParticles] = useState([]);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      const id = Math.random();
-      setParticles(prev => [...prev.slice(-15), {
-        id,
-        x: Math.random() * 100,
-      }]);
-    }, 1500);
-    return () => clearInterval(interval);
-  }, []);
-
-  return (
-    <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
-      <AnimatePresence>
-        {particles.map(p => (
-          <motion.div
-            key={p.id}
-            initial={{ opacity: 0, scale: 0, y: "110vh" }}
-            animate={{ opacity: 0.6, scale: 1, y: "-10vh" }}
-            exit={{ opacity: 0 }}
-            style={{ left: `${p.x}%` }}
-            className="absolute text-sakura"
-            transition={{ duration: 10, ease: "linear" }}
-          >
-            <Heart fill="currentColor" size={Math.random() * 30 + 20} />
-          </motion.div>
-        ))}
-      </AnimatePresence>
     </div>
   );
 };
@@ -140,7 +158,212 @@ const Slide = ({ children, direction }) => (
   </motion.div>
 );
 
-// --- Component Slides ---
+// --- New Features Components ---
+
+const RelationshipCounter = () => {
+  const [time, setTime] = useState({ days: 0, hours: 0, min: 0, sec: 0 });
+  const startDate = new Date('2025-11-09T00:00:00');
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      const now = new Date();
+      const diff = now - startDate;
+
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+      const min = Math.floor((diff / 1000 / 60) % 60);
+      const sec = Math.floor((diff / 1000) % 60);
+
+      setTime({ days, hours, min, sec });
+    }, 1000);
+    return () => clearInterval(timer);
+  }, []);
+
+  const Card = ({ label, value }) => (
+    <div className="bg-white/80 backdrop-blur-sm p-3 md:p-5 rounded-2xl md:rounded-3xl border-2 border-sakura shadow-md">
+      <div className="text-2xl md:text-5xl font-black text-hot-pink font-poppins">{value}</div>
+      <div className="text-[10px] md:text-xs text-princess-pink font-bold uppercase tracking-widest mt-1 md:mt-2">{label}</div>
+    </div>
+  );
+
+  return (
+    <div className="flex gap-2 md:gap-4 justify-center items-center">
+      <Card label="Hari" value={time.days} />
+      <span className="text-hot-pink font-black text-2xl md:text-4xl animate-pulse">:</span>
+      <Card label="Jam" value={time.hours} />
+      <span className="text-hot-pink font-black text-2xl md:text-4xl animate-pulse">:</span>
+      <Card label="Menit" value={time.min} />
+      <span className="text-hot-pink font-black text-2xl md:text-4xl animate-pulse">:</span>
+      <Card label="Detik" value={time.sec} />
+    </div>
+  );
+};
+
+const HoldToHug = () => {
+  const [progress, setProgress] = useState(0);
+  const [isFinished, setIsFinished] = useState(false);
+  const timerRef = useRef(null);
+
+  const startHug = () => {
+    if (isFinished) return;
+    timerRef.current = setInterval(() => {
+      setProgress(prev => {
+        if (prev >= 100) {
+          clearInterval(timerRef.current);
+          setIsFinished(true);
+          confetti({
+            particleCount: 150,
+            spread: 70,
+            origin: { y: 0.6 },
+            colors: ['#FF1493', '#FFFFFF']
+          });
+          return 100;
+        }
+        return prev + 1;
+      });
+    }, 30);
+  };
+
+  const stopHug = () => {
+    if (isFinished) return;
+    clearInterval(timerRef.current);
+    setProgress(0);
+  };
+
+  return (
+    <div className="relative flex flex-col items-center">
+      <AnimatePresence mode="wait">
+        {!isFinished ? (
+          <motion.div
+            key="hugging"
+            className="relative"
+            animate={progress > 0 ? { rotate: [-1, 1, -1] } : {}}
+            transition={{ repeat: Infinity, duration: 0.1 }}
+          >
+            {/* Progress Ring */}
+            <svg className="w-48 h-48 md:w-64 md:h-64 transform -rotate-90">
+              <circle
+                cx="50%" cy="50%" r="45%"
+                className="stroke-sakura/30 fill-none"
+                strokeWidth="8"
+              />
+              <circle
+                cx="50%" cy="50%" r="45%"
+                className="stroke-hot-pink fill-none"
+                strokeWidth="8"
+                strokeDasharray="283"
+                strokeDashoffset={283 - (283 * progress) / 100}
+                strokeLinecap="round"
+              />
+            </svg>
+            <motion.button
+              onMouseDown={startHug}
+              onMouseUp={stopHug}
+              onMouseLeave={stopHug}
+              onTouchStart={startHug}
+              onTouchEnd={stopHug}
+              className="absolute inset-0 flex flex-col items-center justify-center p-8 active:scale-95 transition-transform"
+            >
+              <Heart
+                size={progress > 0 ? 80 + progress / 2 : 80}
+                fill={progress > 0 ? "#FF1493" : "none"}
+                className="text-hot-pink transition-all"
+              />
+              <p className="mt-4 font-black text-hot-pink text-xs md:text-sm tracking-widest uppercase">Tahan Peluknya 🤍</p>
+            </motion.button>
+          </motion.div>
+        ) : (
+          <motion.div
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+            className="flex flex-col items-center"
+          >
+            <div className="w-48 h-48 md:w-64 md:h-64 bg-white rounded-full flex items-center justify-center shadow-2xl border-4 border-hot-pink">
+              <PartyPopper size={100} className="text-hot-pink animate-bounce" />
+            </div>
+            <motion.p
+              initial={{ y: 20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              className="mt-8 text-3xl md:text-5xl font-dancing text-hot-pink font-black"
+            >
+              Pelukan Terikirim! 🧸🤍
+            </motion.p>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+};
+
+const BalloonPop = () => {
+  const wishes = [
+    "Bahagia Selalu! 🌟",
+    "Makin Sayang! 💖",
+    "Tetap Cantik! 🎀",
+    "Sehat Terus! 🍀",
+    "Mimpi Terwujud! ✨",
+    "Selalu Sabar! 🧸"
+  ];
+  const [popped, setPopped] = useState([]);
+
+  const handlePop = (index) => {
+    if (popped.includes(index)) return;
+    setPopped([...popped, index]);
+    confetti({
+      particleCount: 50,
+      scalar: 0.7,
+      colors: ['#FFB7C5', '#FFD700']
+    });
+  };
+
+  return (
+    <div className="relative w-full max-w-lg h-[400px] md:h-[500px]">
+      {wishes.map((wish, i) => (
+        <motion.div
+          key={i}
+          initial={{ y: 500, x: i * 60 }}
+          animate={{
+            y: popped.includes(i) ? -100 : [400, -100],
+            x: i * 60 + Math.sin(i) * 30
+          }}
+          transition={{
+            y: { repeat: Infinity, duration: 8 + i, ease: "linear" },
+            x: { repeat: Infinity, duration: 3, ease: "easeInOut" }
+          }}
+          className="absolute"
+        >
+          <AnimatePresence mode="wait">
+            {!popped.includes(i) ? (
+              <motion.div
+                key="balloon"
+                onClick={() => handlePop(i)}
+                whileHover={{ scale: 1.2 }}
+                className="cursor-pointer text-princess-pink"
+                exit={{ scale: 3, opacity: 0 }}
+              >
+                <div className="w-16 h-20 md:w-20 md:h-24 bg-current rounded-t-full rounded-b-[40%] shadow-lg flex items-center justify-center text-white font-black text-[10px] md:text-xs">
+                  PECÁH!
+                </div>
+                <div className="w-[2px] h-12 bg-current mx-auto mt-[-2px] opacity-40" />
+              </motion.div>
+            ) : (
+              <motion.div
+                key="wish"
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                className="bg-white/90 backdrop-blur-md p-4 rounded-full shadow-lg border-2 border-sakura text-hot-pink font-black whitespace-nowrap text-sm"
+              >
+                {wish}
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </motion.div>
+      ))}
+    </div>
+  );
+};
+
+// --- Existing Slides ---
 
 const HeroSlide = ({ direction, onNext }) => (
   <Slide direction={direction}>
@@ -286,9 +509,7 @@ const CakeSlide = ({ direction }) => {
     <Slide direction={direction}>
       <h2 className="text-4xl md:text-6xl font-black text-hot-pink mb-12 font-dancing">Waktunya Tiup Lilin! 🎂</h2>
       <div className="relative flex flex-col items-center">
-        {/* Cake Structure */}
         <div className="relative w-64 h-64 md:w-80 md:h-80 flex flex-col items-center justify-end">
-          {/* Candles */}
           <div className="flex gap-4 mb-[-10px] z-20">
             {['2', '1'].map((n, i) => (
               <div key={i} className="relative flex flex-col items-center">
@@ -303,47 +524,17 @@ const CakeSlide = ({ direction }) => {
                     className="w-4 h-6 bg-gold rounded-full blur-[2px] shadow-[0_0_10px_#FFD700]"
                   />
                 )}
-                {blown && (
-                  <motion.div
-                    initial={{ opacity: 1, y: 0 }}
-                    animate={{ opacity: 0, y: -20 }}
-                    className="text-gray-400 font-bold text-xs"
-                  >
-                    *psssh*
-                  </motion.div>
-                )}
                 <div className="w-8 h-12 bg-princess-pink rounded-t-lg flex items-center justify-center text-white font-black text-xl border-2 border-white shadow-md">
                   {n}
                 </div>
               </div>
             ))}
           </div>
-
-          {/* Top Tier */}
-          <motion.div
-            initial={{ scale: 0 }}
-            animate={{ scale: 1 }}
-            className="w-40 h-16 bg-sakura rounded-t-3xl border-x-4 border-t-4 border-white shadow-inner z-10"
-          />
-          {/* Middle Tier */}
-          <motion.div
-            initial={{ scale: 0 }}
-            animate={{ scale: 1 }}
-            transition={{ delay: 0.2 }}
-            className="w-56 h-20 bg-princess-pink border-x-4 border-t-4 border-white shadow-md z-[5]"
-          />
-          {/* Bottom Tier */}
-          <motion.div
-            initial={{ scale: 0 }}
-            animate={{ scale: 1 }}
-            transition={{ delay: 0.4 }}
-            className="w-72 h-24 bg-hot-pink rounded-b-lg border-4 border-white shadow-xl"
-          />
-
-          {/* Plate */}
+          <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} className="w-40 h-16 bg-sakura rounded-t-3xl border-x-4 border-t-4 border-white shadow-inner z-10" />
+          <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.2 }} className="w-56 h-20 bg-princess-pink border-x-4 border-t-4 border-white shadow-md z-[5]" />
+          <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.4 }} className="w-72 h-24 bg-hot-pink rounded-b-lg border-4 border-white shadow-xl" />
           <div className="w-80 h-4 bg-gray-100 rounded-full shadow-md mt-[-4px]" />
         </div>
-
         <motion.button
           onClick={handleBlow}
           disabled={blown}
@@ -357,117 +548,18 @@ const CakeSlide = ({ direction }) => {
   );
 };
 
-const ReasonsSlide = ({ direction }) => {
-  const reasons = [
-    "Senyummu paling cantik sedunia! ✨",
-    "Sabar banget ngadepin egoku 🧸",
-    "Suara manismu pas sleepcall 🌙",
-    "Tetap bertahan walau LDR jauh 🌎",
-    "Selalu jadi rumah paling hangat 🏠",
-    "Karena Kamu Adalah Sayangku! 💖"
-  ];
-
-  return (
-    <Slide direction={direction}>
-      <h2 className="text-3xl md:text-5xl font-black text-hot-pink mb-12 md:mb-16 font-dancing">Kenapa Raraa Paling Spesial? 🍓</h2>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 max-w-5xl w-full">
-        {reasons.map((r, i) => (
-          <motion.div
-            key={i}
-            initial={{ opacity: 0, scale: 0.5 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: i * 0.1, type: "spring", bounce: 0.5 }}
-            whileHover={{ scale: 1.05, rotate: [0, -2, 2, 0], backgroundColor: "#FFF0F5" }}
-            className="bg-white p-6 md:p-10 rounded-[2rem] md:rounded-[2.5rem] shadow-[0_15px_40px_rgba(255,105,180,0.2)] border-2 border-sakura flex flex-col items-center justify-center text-center relative overflow-hidden group min-h-[160px]"
-          >
-            <div className="absolute top-2 left-2 text-sakura p-2 opacity-50 text-sm">🌸</div>
-            <Star className="text-gold mb-4 md:mb-6 group-hover:scale-125 transition-transform size-8 md:size-10" fill="currentColor" />
-            <p className="text-gray-800 font-bold italic text-xl md:text-2xl font-dancing leading-snug">{r}</p>
-          </motion.div>
-        ))}
-      </div>
-    </Slide>
-  );
-};
-
-const HeartDrawingSlide = ({ direction }) => {
-  return (
-    <Slide direction={direction}>
-      <div className="relative flex flex-col items-center">
-        <motion.div
-          animate={{ scale: [1, 1.05, 1] }}
-          transition={{ repeat: Infinity, duration: 2 }}
-        >
-          <h2 className="text-3xl md:text-5xl font-black text-hot-pink mb-12 md:mb-16 font-dancing text-center">Cintaku Hanya Untukmu 💌</h2>
-        </motion.div>
-        <div className="relative scale-75 md:scale-100">
-          <Ribbon className="absolute -top-10 -left-10 w-20 h-20 text-princess-pink -rotate-45" />
-          <svg width="300" height="300" md:width="400" md:height="400" viewBox="0 0 200 200" className="drop-shadow-[0_20px_50px_rgba(255,20,147,0.3)]">
-            <motion.path
-              d="M100 40 C100 40 100 20 70 20 C40 20 20 50 20 80 C20 120 100 180 100 180 C100 180 180 120 180 80 C180 50 160 20 130 20 C100 20 100 40 100 40"
-              fill="transparent"
-              stroke="#FF1493"
-              strokeWidth="8"
-              strokeLinecap="round"
-              initial={{ pathLength: 0, fill: "rgba(255, 20, 147, 0)" }}
-              animate={{
-                pathLength: 1,
-                fill: "rgba(255, 105, 180, 0.2)"
-              }}
-              transition={{
-                duration: 4,
-                ease: "easeInOut",
-                fill: { delay: 3, duration: 1.5 }
-              }}
-            />
-            <motion.path
-              d="M100 40 C100 40 100 20 70 20 C40 20 20 50 20 80 C20 120 100 180 100 180 C100 180 180 120 180 80 C180 50 160 20 130 20 C100 20 100 40 100 40"
-              fill="none"
-              stroke="#FFD700"
-              strokeWidth="3"
-              strokeDasharray="15 10"
-              initial={{ pathLength: 0 }}
-              animate={{ pathLength: 1 }}
-              transition={{ duration: 6, repeat: Infinity, ease: "linear" }}
-            />
-          </svg>
-        </div>
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 3.5 }}
-          className="mt-8 md:mt-12 text-2xl md:text-3xl font-dancing text-hot-pink font-black italic text-center max-w-sm"
-        >
-          Tetap pilih kamu, hari ini, esok, dan seterusnya... 🤍
-        </motion.p>
-      </div>
-    </Slide>
-  );
-};
-
 const LetterSlide = ({ direction }) => (
   <Slide direction={direction}>
-    <motion.div
-      className="max-w-3xl w-full bg-white p-10 md:p-20 rounded-[3rem] md:rounded-[4rem] shadow-[0_30px_100px_rgba(255,105,180,0.3)] relative border-4 md:border-8 border-sakura"
-    >
+    <motion.div className="max-w-3xl w-full bg-white p-10 md:p-20 rounded-[3rem] md:rounded-[4rem] shadow-[0_30px_100px_rgba(255,105,180,0.3)] relative border-4 md:border-8 border-sakura">
       <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-24 h-24 md:w-40 md:h-40">
         <Ribbon className="w-full h-full text-hot-pink" />
       </div>
-
       <h3 className="text-3xl md:text-5xl text-hot-pink font-black font-dancing mb-10 md:mb-12 glitter-text">Selamat Ulang Tahun, Raraa cintaku... 🎈</h3>
       <div className="font-dancing text-xl md:text-3xl text-gray-800 leading-relaxed space-y-8 md:space-y-10 text-center font-bold">
-        <p>
-          "Maafkan aku yang sering menyakitkan. Kita sering bertengkar, sering diam... Aku salah, terlalu banyak kau pendam."
-        </p>
-        <p className="text-princess-pink italic">
-          "Kalau dunia terasa berat dan aku jadi alasan sesak, pegang tanganku meski jauh. Aku masih ingin berjuang untukmu."
-        </p>
-        <p>
-          "Di umur dua puluh satu ini, semoga hatimu selalu hangat. Aku tak ingin kehilangan rasa, aku sayang kamu... jangan ragu, ya."
-        </p>
-        <p className="text-hot-pink text-3xl md:text-5xl mt-8 transition-all glitter-text">
-          Forever Yours, Bobby 🤍
-        </p>
+        <p>"Maafkan aku yang sering menyakitkan. Kita sering bertengkar, sering diam... Aku salah, terlalu banyak kau pendam."</p>
+        <p className="text-princess-pink italic">"Kalau dunia terasa berat dan aku jadi alasan sesak, pegang tanganku meski jauh. Aku masih ingin berjuang untukmu."</p>
+        <p>"Di umur dua puluh satu ini, semoga hatimu selalu hangat. Aku tak ingin kehilangan rasa, aku sayang kamu... jangan ragu, ya."</p>
+        <p className="text-hot-pink text-3xl md:text-5xl mt-8 transition-all glitter-text">Forever Yours, Bobby 🤍</p>
       </div>
     </motion.div>
   </Slide>
@@ -475,34 +567,17 @@ const LetterSlide = ({ direction }) => (
 
 const GiftSlide = ({ direction }) => {
   const [isOpen, setIsOpen] = useState(false);
-
   const handleOpen = () => {
     if (isOpen) return;
     setIsOpen(true);
-    confetti({
-      particleCount: 200,
-      spread: 80,
-      origin: { y: 0.6 },
-      colors: ['#FF1493', '#FF69B4', '#FFB7C5', '#FFD700', '#FFFFFF']
-    });
+    confetti({ particleCount: 200, spread: 80, origin: { y: 0.6 }, colors: ['#FF1493', '#FF69B4', '#FFB7C5', '#FFD700', '#FFFFFF'] });
   };
-
   return (
     <Slide direction={direction}>
       <AnimatePresence mode="wait">
         {!isOpen ? (
-          <motion.div
-            key="closed"
-            className="flex flex-col items-center"
-            exit={{ scale: 0, opacity: 0, rotate: 180 }}
-          >
-            <motion.div
-              onClick={handleOpen}
-              className="cursor-pointer relative group"
-              animate={{ rotate: [-3, 3, -3], y: [0, -15, 0] }}
-              transition={{ repeat: Infinity, duration: 1.5 }}
-              whileHover={{ scale: 1.1 }}
-            >
+          <motion.div key="closed" className="flex flex-col items-center" exit={{ scale: 0, opacity: 0, rotate: 180 }}>
+            <motion.div onClick={handleOpen} className="cursor-pointer relative group" animate={{ rotate: [-3, 3, -3], y: [0, -15, 0] }} transition={{ repeat: Infinity, duration: 1.5 }} whileHover={{ scale: 1.1 }}>
               <div className="absolute inset-0 bg-hot-pink/30 blur-[40px] md:blur-[60px] rounded-full scale-150 animate-pulse" />
               <Gift className="w-40 h-40 md:w-56 md:h-56 text-hot-pink relative z-10 drop-shadow-2xl" strokeWidth={1.5} />
               <Ribbon className="absolute top-2 left-1/2 -translate-x-1/2 w-14 h-14 md:w-20 md:h-20 text-white z-20" />
@@ -510,17 +585,10 @@ const GiftSlide = ({ direction }) => {
             <p className="mt-12 md:mt-16 text-hot-pink font-black text-2xl md:text-3xl animate-bounce tracking-widest glitter-text">TEKAN KADO RARAA! 🍰</p>
           </motion.div>
         ) : (
-          <motion.div
-            key="open"
-            initial={{ scale: 0 }}
-            animate={{ scale: 1 }}
-            className="text-center bg-white p-8 md:p-20 rounded-[3rem] md:rounded-[5rem] shadow-[0_40px_120px_rgba(255,20,147,0.4)] border-4 md:border-8 border-hot-pink relative mx-4"
-          >
+          <motion.div key="open" initial={{ scale: 0 }} animate={{ scale: 1 }} className="text-center bg-white p-8 md:p-20 rounded-[3rem] md:rounded-[5rem] shadow-[0_40px_120px_rgba(255,20,147,0.4)] border-4 md:border-8 border-hot-pink relative mx-4">
             <Ribbon className="absolute -top-12 md:-top-16 left-1/2 -translate-x-1/2 w-32 h-32 md:w-48 md:h-48 text-hot-pink" />
             <h2 className="text-4xl md:text-8xl font-black text-hot-pink mb-8 md:mb-10 font-dancing glitter-text">HBD MY PRINCESS! 👑</h2>
-            <p className="text-xl md:text-3xl text-gray-700 italic font-black max-w-xl mx-auto mb-8 font-dancing leading-relaxed">
-              Semoga bahagiamu selalu utuh, tawamu tak pernah luntur. I love you more than segala-galanya! ❤️🍭
-            </p>
+            <p className="text-xl md:text-3xl text-gray-700 italic font-black max-w-xl mx-auto mb-8 font-dancing leading-relaxed">Semoga bahagiamu selalu utuh, tawamu tak pernah luntur. I love you more than segala-galanya! ❤️🍭</p>
           </motion.div>
         )}
       </AnimatePresence>
@@ -530,12 +598,7 @@ const GiftSlide = ({ direction }) => {
 
 const FinalSlide = ({ direction }) => (
   <Slide direction={direction}>
-    <motion.div
-      initial={{ scale: 0.5 }}
-      animate={{ scale: [1, 1.15, 1], rotate: [0, 3, -3, 0] }}
-      transition={{ repeat: Infinity, duration: 3 }}
-      className="relative"
-    >
+    <motion.div initial={{ scale: 0.5 }} animate={{ scale: [1, 1.15, 1], rotate: [0, 3, -3, 0] }} transition={{ repeat: Infinity, duration: 3 }} className="relative">
       <div className="absolute inset-0 bg-hot-pink/30 rounded-full blur-[80px] md:blur-[120px]" />
       <Heart className="w-60 h-60 md:w-80 md:h-80 text-princess-pink" fill="currentColor" />
       <div className="absolute inset-0 flex flex-col items-center justify-center text-white p-4">
@@ -545,8 +608,12 @@ const FinalSlide = ({ direction }) => (
       </div>
     </motion.div>
     <div className="mt-12 md:mt-16 text-center">
-      <p className="text-hot-pink font-black tracking-[0.3em] uppercase text-sm md:text-lg mb-4">Bobby 🤍 Raraa</p>
-      <p className="text-princess-pink font-dancing text-3xl md:text-4xl font-bold animate-bounce italic">Cant't wait to see you soon!</p>
+      <p className="mb-8 font-dancing text-2xl text-hot-pink font-bold">Sudah Berapa Lama Kita Bersama?</p>
+      <RelationshipCounter />
+      <div className="mt-12">
+        <p className="text-hot-pink font-black tracking-[0.3em] uppercase text-sm md:text-lg mb-4">Bobby 🤍 Raraa</p>
+        <p className="text-princess-pink font-dancing text-3xl md:text-4xl font-bold animate-bounce italic">Cant't wait to see you soon!</p>
+      </div>
     </div>
   </Slide>
 );
@@ -558,14 +625,25 @@ function App() {
   const [direction, setDirection] = useState(1);
   const [isPlaying, setIsPlaying] = useState(false);
   const audioRef = useRef(null);
-  const totalSlides = 9; // Added CakeSlide
+
+  // New Slides Mapping
+  const SLIDES = [
+    { key: "hero", comp: HeroSlide },
+    { key: "timeline", comp: TimelineSlide },
+    { key: "lyrics", comp: LyricsSlide },
+    { key: "balloons", comp: (props) => <Slide {...props}><h2 className="text-3xl md:text-5xl font-black text-hot-pink mb-12 font-dancing">Wishes for You 🎈</h2><BalloonPop /></Slide> },
+    { key: "cake", comp: CakeSlide },
+    { key: "hug", comp: (props) => <Slide {...props}><h2 className="text-3xl md:text-5xl font-black text-hot-pink mb-12 font-dancing">Send Me A Hug! 🫂</h2><HoldToHug /></Slide> },
+    { key: "letter", comp: LetterSlide },
+    { key: "gift", comp: GiftSlide },
+    { key: "final", comp: FinalSlide }
+  ];
+
+  const totalSlides = SLIDES.length;
 
   const toggleMusic = () => {
-    if (isPlaying) {
-      audioRef.current.pause();
-    } else {
-      audioRef.current.play();
-    }
+    if (isPlaying) audioRef.current.pause();
+    else audioRef.current.play();
     setIsPlaying(!isPlaying);
   };
 
@@ -586,36 +664,30 @@ function App() {
     }
   };
 
+  const CurrentSlideComp = SLIDES[slide].comp;
+
   return (
     <main className="h-screen w-screen bg-pearl-white overflow-hidden relative font-poppins selection:bg-hot-pink/20 selection:text-hot-pink cursor-default">
       <MusicPlayer isPlaying={isPlaying} toggleMusic={toggleMusic} />
-      <HeartParticles />
+      <AmbientBackground />
       <Glitter />
 
-      {/* Hidden Audio Element */}
-      <audio
-        ref={audioRef}
-        loop
-        src="/lagu-raraa.mp3"
-      />
+      <audio ref={audioRef} loop src="/lagu-raraa.mp3" />
 
-      {/* Progress Dots - HEART VERSION */}
+      {/* Progress Dots */}
       <div className="fixed top-6 left-6 md:top-10 md:left-10 flex gap-2 md:gap-4 z-[60] bg-white/60 backdrop-blur-md p-3 md:p-4 rounded-full border-2 border-sakura shadow-md">
-        {[...Array(totalSlides)].map((_, i) => (
+        {SLIDES.map((_, i) => (
           <motion.div
             key={i}
-            className={`cursor-pointer flex items-center justify-center`}
-            onClick={() => {
-              setDirection(i > slide ? 1 : -1);
-              setSlide(i);
-            }}
+            className="cursor-pointer flex items-center justify-center"
+            onClick={() => { setDirection(i > slide ? 1 : -1); setSlide(i); }}
             whileHover={{ scale: 1.3 }}
           >
             <Heart
               fill={i <= slide ? "#FF1493" : "none"}
               stroke={i <= slide ? "#FF1493" : "#FFB7C5"}
               size={i === slide ? 22 : 12}
-              className={`transition-all duration-300 ${i === slide ? 'drop-shadow-[0_0_8px_#FF1493]' : ''}`}
+              className="transition-all duration-300"
               strokeWidth={3}
             />
           </motion.div>
@@ -624,19 +696,11 @@ function App() {
 
       <div className="relative h-full w-full">
         <AnimatePresence mode="wait" custom={direction}>
-          {slide === 0 && <HeroSlide key={0} direction={direction} onNext={nextSlide} />}
-          {slide === 1 && <TimelineSlide key={1} direction={direction} />}
-          {slide === 2 && <LyricsSlide key={2} direction={direction} />}
-          {slide === 3 && <CakeSlide key={3} direction={direction} />}
-          {slide === 4 && <ReasonsSlide key={4} direction={direction} />}
-          {slide === 5 && <HeartDrawingSlide key={5} direction={direction} />}
-          {slide === 6 && <LetterSlide key={6} direction={direction} />}
-          {slide === 7 && <GiftSlide key={7} direction={direction} />}
-          {slide === 8 && <FinalSlide key={8} direction={direction} />}
+          <CurrentSlideComp key={SLIDES[slide].key} direction={direction} onNext={nextSlide} />
         </AnimatePresence>
       </div>
 
-      {/* Navigation Buttons - PINKY BOUNCE */}
+      {/* Navigation Buttons */}
       <div className="fixed bottom-6 left-0 right-0 md:bottom-10 flex justify-center items-center gap-6 md:gap-12 z-[60] px-4">
         <AnimatePresence>
           {slide > 0 && (
@@ -669,8 +733,8 @@ function App() {
         </AnimatePresence>
       </div>
 
-      <footer className="fixed bottom-1 md:bottom-2 left-1/2 -translate-x-1/2 text-[8px] md:text-[10px] text-hot-pink/40 tracking-[0.3em] md:tracking-[0.5em] font-black uppercase pointer-events-none">
-        Special for Raraa 🤍 2026
+      <footer className="fixed bottom-1 md:bottom-2 left-1/2 -translate-x-1/2 text-[8px] md:text-[10px] text-hot-pink/40 tracking-[0.3em] md:tracking-[0.5em] font-black uppercase pointer-events-none text-center px-4">
+        Handcrafted for Raraa 🤍 Nov 9, 2025 - ✨ 2026
       </footer>
     </main>
   );
