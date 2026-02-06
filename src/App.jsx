@@ -402,7 +402,7 @@ const HeroSlide = ({ direction, onNext }) => (
 const TimelineSlide = ({ direction }) => {
   const [step, setStep] = useState(0);
   const moments = [
-    { title: "Roblox Story 🎮", text: "Delapan Februari, di dunia roblox semua bermula. Tak pernah ku sangka akhirnya hatiku jatuh sedalam ini padamu.", icon: <Gamepad2 /> },
+    { title: "Roblox Story 🎮", text: "Di dunia Roblox semua bermula, tempat kita pertama kali menyapa. Tak pernah ku sangka akhirnya hatiku jatuh sedalam ini padamu.", icon: <Gamepad2 /> },
     { title: "Suara Penenang 📞", text: "Malam terasa panjang saat rindu menyerang, tapi suaramu jadi penenang meski hanya lewat layar terang.", icon: <MessageCircle /> },
     { title: "LDR & VC 🌍", text: "Meski LDR memisahkan kita, VC jadi peluk sederhana. Jangan simpan lukamu sendiri, aku di sini untukmu.", icon: <MapPin /> },
     { title: "Our 21st Lily 🌸", text: "Hari ini, 21 lilin menyala. Menyebut namamu dalam doa, semoga hatimu selalu hangat meski hidup tak selalu ramah.", icon: <Calendar /> }
