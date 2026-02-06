@@ -183,10 +183,10 @@ const HeroSlide = ({ direction, onNext }) => (
 const TimelineSlide = ({ direction }) => {
   const [step, setStep] = useState(0);
   const moments = [
-    { title: "Roblox Story 🎮", text: "Dimulai dari dunia blok, siapa sangka cinta kita nggak cuma bohongan. Dari Roblox jadi Rumah paling nyaman.", icon: <Gamepad2 /> },
-    { title: "Suara Manismu 📞", text: "Malam-malam lewati layar kecil, tapi hangatnya suara kamu sampai ke ulu hati. Sleepcall yang paling berharga.", icon: <MessageCircle /> },
-    { title: "Rindu LDR 🌍", text: "LDR menyiksa, tapi VC jadi nyawa. Walau jarak memisahkan tangan, hatiku tetap di genggamanmu.", icon: <MapPin /> },
-    { title: "Our 21st Lily 🌸", text: "Hari ini, 21 lilin menyala. Doaku sampai ke sana, menjagamu walau dari jauh saja.", icon: <Calendar /> }
+    { title: "Roblox Story 🎮", text: "Delapan Februari, di dunia blok semua bermula. Tak pernah ku sangka akhirnya hatiku jatuh sedalam ini padamu.", icon: <Gamepad2 /> },
+    { title: "Suara Penenang 📞", text: "Malam terasa panjang saat rindu menyerang, tapi suaramu jadi penenang meski hanya lewat layar terang.", icon: <MessageCircle /> },
+    { title: "LDR & VC 🌍", text: "Meski LDR memisahkan kita, VC jadi peluk sederhana. Jangan simpan lukamu sendiri, aku di sini untukmu.", icon: <MapPin /> },
+    { title: "Our 21st Lily 🌸", text: "Hari ini, 21 lilin menyala. Menyebut namamu dalam doa, semoga hatimu selalu hangat meski hidup tak selalu ramah.", icon: <Calendar /> }
   ];
 
   return (
@@ -230,10 +230,10 @@ const TimelineSlide = ({ direction }) => {
 
 const LyricsSlide = ({ direction }) => {
   const lyrics = [
-    "Kadang cinta bikin emosi, kadang kata melukai.",
-    "Maafkan aku yang sering kurang tenang, sering salah paham.",
-    "Tapi cintaku tak pernah hilang, walau dunia kejam.",
-    "Jangan lelah mencintaiku, aku tetap pilih kamu."
+    "Maafkan aku yang sering menyakitkan, sering bertengkar, sering diam.",
+    "Aku tahu aku bukan yang terbaik, sering egois, sering terlalu keras.",
+    "Tapi aku mau belajar jadi lebih baik, agar bahagiamu tak lagi retak.",
+    "Suatu hari nanti tak ada jarak lagi, tak ada layar, hanya aku dan kamu."
   ];
 
   return (
@@ -454,19 +454,19 @@ const LetterSlide = ({ direction }) => (
         <Ribbon className="w-full h-full text-hot-pink" />
       </div>
 
-      <h3 className="text-3xl md:text-5xl text-hot-pink font-black font-dancing mb-10 md:mb-12 glitter-text">Selamat Ulang Tahun, Raraa Sayang... 🎈</h3>
-      <div className="font-dancing text-xl md:text-4xl text-gray-800 leading-normal md:leading-loose space-y-6 md:space-y-10 text-center font-bold">
+      <h3 className="text-3xl md:text-5xl text-hot-pink font-black font-dancing mb-10 md:mb-12 glitter-text">Selamat Ulang Tahun, Raraa cintaku... 🎈</h3>
+      <div className="font-dancing text-xl md:text-3xl text-gray-800 leading-relaxed space-y-8 md:space-y-10 text-center font-bold">
         <p>
-          21 tahun lilin menyala, walau jarak pisahkan kita, doaku selalu sampai ke sana. Kamu adalah hadiah dari dunia maya yang jadi kenyataan terindahku.
+          "Maafkan aku yang sering menyakitkan. Kita sering bertengkar, sering diam... Aku salah, terlalu banyak kupendam."
         </p>
-        <p className="text-princess-pink scale-105 md:scale-110 transform">
-          "Maaf ya kalau aku sering egois, sering salah paham, bikin kamu nangis. Makasih udah bertahan saat aku sulit dimengerti."
+        <p className="text-princess-pink italic">
+          "Kalau dunia terasa berat dan aku jadi alasan sesak, pegang tanganku meski jauh. Aku masih ingin berjuang untukmu."
         </p>
-        <p className="glitter-text">
-          Suatu hari kita tak lagi menghitung jarak. Tak lewat layar, tak lewat suara, tapi benar-benar bersatu selamanya.
+        <p>
+          "Di umur dua puluh satu ini, semoga hatimu selalu hangat. Aku tak ingin kehilangan rasa, aku sayang kamu... jangan ragu, ya."
         </p>
-        <p className="text-hot-pink text-3xl md:text-6xl mt-8 md:mt-12 transition-all">
-          Aku sayang kamu, sungguh 🤍 🎀
+        <p className="text-hot-pink text-3xl md:text-5xl mt-8 transition-all glitter-text">
+          Forever Yours, Bobby 🤍
         </p>
       </div>
     </motion.div>
