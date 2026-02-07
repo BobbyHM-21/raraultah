@@ -698,7 +698,7 @@ const MusicPlayerSlide = ({ direction }) => {
   const lyricsRef = useRef(null);
 
   const songs = [
-    { title: "Lagu Raraa", file: "/lagu-raraa.mpeg", artist: "Bobby untuk Raraa" },
+    { title: "Selamat Ulang Tahun Raraa", file: "/lagu-raraa.mpeg", artist: "Bobby untuk Raraa" },
     { title: "Maaf", file: "/lagu-maaf.mpeg", artist: "Untuk Raraa" }
   ];
 
