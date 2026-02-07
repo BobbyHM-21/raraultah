@@ -1095,7 +1095,7 @@ function App() {
       <MusicPlayer isPlaying={isPlaying} toggleMusic={toggleMusic} />
       <AmbientBackground />
       <Glitter />
-      <audio ref={audioRef} loop src="/lagu-raraa.mp3" preload="auto" />
+      <audio ref={audioRef} loop src="/lagu-raraa.mpeg" preload="auto" />
 
       <div className="fixed top-6 left-1/2 -translate-x-1/2 md:translate-x-0 md:left-10 flex gap-1 md:gap-2 z-[60] bg-white/60 backdrop-blur-md p-2 md:p-3 rounded-full border-2 border-sakura shadow-md max-w-[90vw] overflow-x-auto hide-scrollbar scroll-smooth">
         {SLIDES.map((_, i) => (
