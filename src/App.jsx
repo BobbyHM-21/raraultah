@@ -1040,6 +1040,17 @@ function App() {
     }
   };
 
+  // Auto-pause background music when on music player slide
+  useEffect(() => {
+    const isMusicPlayerSlide = SLIDES[slide]?.key === "music";
+
+    if (isMusicPlayerSlide && isPlaying && audioRef.current) {
+      // Pause background music when entering music player slide
+      audioRef.current.pause();
+      setIsPlaying(false);
+    }
+  }, [slide]);
+
   const nextSlide = () => {
     if (slide < totalSlides - 1) {
       if (slide === 0) startMusic();
