@@ -689,6 +689,281 @@ const GiftSlide = ({ direction }) => {
   );
 };
 
+const MusicPlayerSlide = ({ direction }) => {
+  const [currentSong, setCurrentSong] = useState(0);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [currentTime, setCurrentTime] = useState(0);
+  const [duration, setDuration] = useState(0);
+  const playerRef = useRef(null);
+  const lyricsRef = useRef(null);
+
+  const songs = [
+    { title: "Lagu Raraa", file: "/lagu-raraa.mpeg", artist: "Bobby untuk Raraa" },
+    { title: "Maaf", file: "/lagu-maaf.mpeg", artist: "Untuk Raraa" }
+  ];
+
+  const lyrics = {
+    0: [
+      "Delapan Februari",
+      "Dua puluh satu lilin menyala",
+      "Di sunyi layar malam ini",
+      "Namamu jadi doa",
+      "",
+      "Kita bertemu tanpa rencana",
+      "Di dunia maya, Roblox ceritanya",
+      "Tak pernah ku duga akhirnya",
+      "Hatiku jatuh hanya padamu",
+      "",
+      "Malam terasa panjang",
+      "Rindu datang perlahan",
+      "Suaramu menenangkan",
+      "Meski jarak membentang",
+      "",
+      "Selamat ulang tahun, Raraa sayang",
+      "Maafkan aku yang sering keliru",
+      "Kita bertengkar, lalu terdiam",
+      "Aku terlambat membaca yang kau pendam",
+      "",
+      "Meski LDR memisahkan kita",
+      "VC jadi temu sederhana",
+      "Jika hatimu menyimpan luka",
+      "Tolong bicara, jangan sendiri",
+      "",
+      "Aku tahu aku belum sempurna",
+      "Kadang egois, kadang tak peka",
+      "Cintaku sering salah cara",
+      "Dan itu membuatmu lelah",
+      "",
+      "Hari ini aku belajar jujur",
+      "Mengakui salah dan bersyukur",
+      "Aku ingin tumbuh bersamamu",
+      "Menjadi lebih baik untukmu",
+      "",
+      "Saat dunia terasa berat",
+      "Dan aku jadi bagian sesak",
+      "Genggam tanganku meski jauh",
+      "Aku masih ingin bertahan",
+      "",
+      "Selamat ulang tahun, Raraa cintaku",
+      "Di usia dua puluh satu ini",
+      "Semoga hatimu tetap hangat",
+      "Walau hidup tak selalu pasti",
+      "",
+      "Meski LDR masih membentang",
+      "Aku tak ingin kehilangan terang",
+      "Aku akan belajar setia menjaga",
+      "Agar bahagiamu tetap ada",
+      "",
+      "Suatu hari nanti",
+      "Tak ada jarak lagi",
+      "Tak ada layar, tak ada waktu",
+      "Hanya aku dan kamu",
+      "",
+      "Ini lagu sederhana dariku",
+      "Untuk kamu di hatiku",
+      "Selamat ulang tahun, Raraa",
+      "Aku memilihmu, selalu"
+    ],
+    1: [
+      "Aku tak tahu",
+      "Ke mana waktu akan membawa kita",
+      "Jujur, aku takut",
+      "Ini jadi cara terakhirku menyapamu",
+      "",
+      "Terima kasih",
+      "Untuk semua yang pernah kamu beri",
+      "Untuk sabar, tawa, dan luka",
+      "Yang pernah kita bagi",
+      "",
+      "Mencinta ternyata tak selalu mudah",
+      "Butuh hadir, mengerti, dan bertahan",
+      "Dan aku sadar",
+      "Tak semua bisa kujalani dengan sempurna",
+      "",
+      "Maafkan aku, sayang",
+      "Jika caraku sering melukai",
+      "Aku sudah berusaha sejujur yang aku bisa",
+      "Meski hasilnya tak selalu baik",
+      "",
+      "Jika suatu hari kamu merasa lelah",
+      "Atau ini bukan yang kamu mau",
+      "Aku tak akan menahan",
+      "Karena memaksa hanya menunda luka",
+      "",
+      "Aku tahu rasanya berharap",
+      "Lalu kecewa setelah berjuang",
+      "Tapi semua yang kulakukan",
+      "Selalu datang dari niat yang tulus",
+      "",
+      "Jika memang ini akhirnya",
+      "Biarlah berakhir tanpa benci",
+      "Aku hanya ingin kamu",
+      "Tetap baik-baik di sana",
+      "",
+      "Jaga dirimu",
+      "Semoga kamu selalu bahagia",
+      "Dan jika aku harus melepaskan",
+      "Lakukanlah dengan tenang"
+    ]
+  };
+
+  useEffect(() => {
+    const audio = playerRef.current;
+    if (!audio) return;
+
+    const updateTime = () => setCurrentTime(audio.currentTime);
+    const updateDuration = () => setDuration(audio.duration);
+    const handleEnded = () => setIsPlaying(false);
+
+    audio.addEventListener('timeupdate', updateTime);
+    audio.addEventListener('loadedmetadata', updateDuration);
+    audio.addEventListener('ended', handleEnded);
+
+    return () => {
+      audio.removeEventListener('timeupdate', updateTime);
+      audio.removeEventListener('loadedmetadata', updateDuration);
+      audio.removeEventListener('ended', handleEnded);
+    };
+  }, [currentSong]);
+
+  const togglePlay = async () => {
+    const audio = playerRef.current;
+    if (!audio) return;
+
+    try {
+      if (isPlaying) {
+        audio.pause();
+        setIsPlaying(false);
+      } else {
+        await audio.play();
+        setIsPlaying(true);
+      }
+    } catch (err) {
+      console.log("Playback error:", err);
+    }
+  };
+
+  const changeSong = (index) => {
+    if (index === currentSong) return;
+    const audio = playerRef.current;
+    if (audio) {
+      audio.pause();
+      setIsPlaying(false);
+    }
+    setCurrentSong(index);
+    setCurrentTime(0);
+  };
+
+  const handleProgressClick = (e) => {
+    const audio = playerRef.current;
+    if (!audio || !duration) return;
+
+    const bounds = e.currentTarget.getBoundingClientRect();
+    const x = e.clientX - bounds.left;
+    const percentage = x / bounds.width;
+    audio.currentTime = duration * percentage;
+  };
+
+  const formatTime = (time) => {
+    if (!time || isNaN(time)) return "0:00";
+    const mins = Math.floor(time / 60);
+    const secs = Math.floor(time % 60);
+    return `${mins}:${secs.toString().padStart(2, '0')}`;
+  };
+
+  return (
+    <Slide direction={direction}>
+      <h2 className="text-3xl md:text-5xl font-black text-hot-pink mb-8 font-dancing">Our Songs 🎵</h2>
+
+      <div className="max-w-md w-full bg-white/90 backdrop-blur-md rounded-[3rem] p-6 md:p-8 shadow-2xl border-4 border-sakura relative">
+        <div className="absolute -top-8 left-1/2 -translate-x-1/2">
+          <motion.div
+            animate={{ rotate: isPlaying ? 360 : 0 }}
+            transition={{ repeat: isPlaying ? Infinity : 0, duration: 3, ease: "linear" }}
+            className="w-16 h-16 bg-gradient-to-br from-hot-pink to-princess-pink rounded-full flex items-center justify-center shadow-xl"
+          >
+            <Music className="text-white" size={32} />
+          </motion.div>
+        </div>
+
+        {/* Song Info */}
+        <div className="text-center mb-6 mt-4">
+          <h3 className="text-xl md:text-2xl font-black text-hot-pink mb-1">{songs[currentSong].title}</h3>
+          <p className="text-princess-pink font-dancing text-sm md:text-base">{songs[currentSong].artist}</p>
+        </div>
+
+        {/* Progress Bar */}
+        <div className="mb-4">
+          <div
+            onClick={handleProgressClick}
+            className="w-full h-2 bg-sakura/30 rounded-full cursor-pointer overflow-hidden mb-2 hover:h-3 transition-all"
+          >
+            <motion.div
+              className="h-full bg-gradient-to-r from-hot-pink to-princess-pink rounded-full"
+              style={{ width: `${duration ? (currentTime / duration) * 100 : 0}%` }}
+            />
+          </div>
+          <div className="flex justify-between text-xs text-princess-pink font-bold">
+            <span>{formatTime(currentTime)}</span>
+            <span>{formatTime(duration)}</span>
+          </div>
+        </div>
+
+        {/* Play/Pause Button */}
+        <motion.button
+          onClick={togglePlay}
+          whileTap={{ scale: 0.9 }}
+          className="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-hot-pink to-princess-pink rounded-full flex items-center justify-center text-white shadow-xl hover:shadow-2xl transition-all"
+        >
+          {isPlaying ? <VolumeX size={32} /> : <Volume2 size={32} />}
+        </motion.button>
+
+        {/* Song Selector */}
+        <div className="flex gap-2 justify-center mb-6">
+          {songs.map((song, index) => (
+            <motion.button
+              key={index}
+              onClick={() => changeSong(index)}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className={`flex-1 py-2 px-3 rounded-2xl font-bold text-xs md:text-sm transition-all ${currentSong === index
+                ? 'bg-hot-pink text-white shadow-lg'
+                : 'bg-sakura/20 text-princess-pink hover:bg-sakura/40'
+                }`}
+            >
+              {song.title}
+            </motion.button>
+          ))}
+        </div>
+
+        {/* Lyrics Display */}
+        <div
+          ref={lyricsRef}
+          className="mt-4 p-4 bg-sakura/10 rounded-2xl border-2 border-sakura max-h-64 overflow-y-auto hide-scrollbar scroll-smooth"
+        >
+          <div className="text-center space-y-2">
+            {lyrics[currentSong].map((line, index) => (
+              <motion.p
+                key={index}
+                initial={{ opacity: 0.5 }}
+                animate={{ opacity: 1 }}
+                className={`font-dancing text-sm md:text-base leading-relaxed transition-all ${line === ""
+                  ? "h-2"
+                  : "text-gray-700 hover:text-hot-pink font-semibold"
+                  }`}
+              >
+                {line || "\u00A0"}
+              </motion.p>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <audio ref={playerRef} src={songs[currentSong].file} preload="metadata" />
+    </Slide>
+  );
+};
+
 const FinalSlide = ({ direction }) => (
   <Slide direction={direction}>
     <motion.div initial={{ scale: 0.5 }} animate={{ scale: [1, 1.1, 1] }} transition={{ repeat: Infinity, duration: 1.2, ease: "easeInOut" }} className="relative">
@@ -733,7 +1008,8 @@ function App() {
     { key: "promise", comp: PinkyPromiseSlide },
     { key: "open-when", comp: OpenWhenLetter },
     { key: "gift", comp: GiftSlide },
-    { key: "final", comp: FinalSlide }
+    { key: "final", comp: FinalSlide },
+    { key: "music", comp: MusicPlayerSlide }
   ];
 
   const totalSlides = SLIDES.length;
