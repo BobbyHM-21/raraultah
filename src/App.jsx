@@ -566,6 +566,26 @@ const HeroSlide = ({ direction, onNext }) => (
         Buka Hati Raraa ✨
         <Sparkles className="absolute -bottom-4 -right-4 text-gold group-hover:animate-spin size-5 md:size-6" />
       </motion.button>
+
+      {/* Instructions */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 2 }}
+        className="mt-16 space-y-3 max-w-md mx-auto"
+      >
+        <div className="bg-white/80 backdrop-blur-sm p-4 rounded-2xl border-2 border-sakura shadow-md">
+          <p className="text-princess-pink font-bold text-sm md:text-base mb-2 flex items-center justify-center gap-2">
+            <MousePointer2 size={20} className="animate-bounce" />
+            Cara Navigasi
+          </p>
+          <p className="text-gray-700 text-xs md:text-sm font-dancing">
+            • Klik tombol "Lihat Kejutan" di bawah untuk slide berikutnya<br />
+            • Klik ikon ❤️ di atas untuk loncat ke slide tertentu<br />
+            • Klik 🔊 pojok kanan atas untuk on/off musik
+          </p>
+        </div>
+      </motion.div>
     </motion.div>
   </Slide>
 );
@@ -873,7 +893,16 @@ const MusicPlayerSlide = ({ direction }) => {
 
   return (
     <Slide direction={direction}>
-      <h2 className="text-3xl md:text-5xl font-black text-hot-pink mb-8 font-dancing">Our Songs 🎵</h2>
+      <h2 className="text-3xl md:text-5xl font-black text-hot-pink mb-4 font-dancing">Our Songs 🎵</h2>
+
+      {/* Instruction hint */}
+      <motion.p
+        initial={{ opacity: 0, y: -10 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="text-princess-pink text-sm md:text-base mb-6 font-bold animate-pulse"
+      >
+        ⬇️ Klik ▶️ untuk putar lagu, pilih lagu di bawah, scroll untuk baca lirik ⬇️
+      </motion.p>
 
       <div className="max-w-md w-full bg-white/90 backdrop-blur-md rounded-[3rem] p-6 md:p-8 shadow-2xl border-4 border-sakura relative">
         <div className="absolute -top-8 left-1/2 -translate-x-1/2">
